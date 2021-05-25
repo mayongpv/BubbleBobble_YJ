@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
             if (moveX != 0)
             {//moveX가 양수면 180 로테이션 아니면 0도 로테이션
                 float rotateY = 0;
-                if (moveX > 0)
+                if (moveX < 0)
                     rotateY = 180;
 
                 var rotation = transform.rotation;
