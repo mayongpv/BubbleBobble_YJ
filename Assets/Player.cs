@@ -13,6 +13,24 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
+        FireBubble();
+
+        Move();
+    }
+    public GameObject bubble;
+    public Transform bubbleSpawnPos;
+    private void FireBubble()
+    {
+        // 스페이스 누르면 버블 날리기.
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(bubble, bubbleSpawnPos.position, transform.rotation);
+        }
+    }
+
+    private void Move()
+    {
+
         // WASD, W위로, A왼쪽,S아래, D오른쪽
         float moveX = 0;
       
