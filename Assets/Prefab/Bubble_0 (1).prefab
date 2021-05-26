@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7289845627737527755}
   - component: {fileID: 7289845627737527759}
   - component: {fileID: 7289845627737527758}
+  - component: {fileID: 313571542}
+  - component: {fileID: 8827276929431781354}
   m_Layer: 0
   m_Name: Bubble_0 (1)
   m_TagString: Untagged
@@ -133,6 +135,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveForwardFrame: 6
-  speed: 0.7
+  speed: 1.4
   rigidbody2D: {fileID: 0}
   gravityScale: -0.7
+--- !u!50 &313571542
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7289845627737527754}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &8827276929431781354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7289845627737527754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95737d8fd37c2204abca9dbb93c56a06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyTime: 10
+  OnEnableLog: 0
+  OnDisableLog: 0
+  OnDestroyLog: 0
+  StopOnLog: 0
