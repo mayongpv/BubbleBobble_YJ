@@ -3,15 +3,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed = 0.1f;
-    new public Rigidbody2D rigidbody2D;
-    new public Collider2D collider2D;
     public Animator animator;
-    public float jumpForce = 300f;
+    new public Collider2D collider2D;
+    new public Rigidbody2D rigidbody2D;
+    public float jumpForce = 100f;
 
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        collider2D = GetComponent<Collider2D>();
         Application.targetFrameRate = 60;
     }
     private void Update()
@@ -23,30 +24,6 @@ public class Player : MonoBehaviour
         Jump();
 
     }
-
-  
-
-    //공중에서 점프를 막고 싶다.
-
-
-
-    private void Jump()
-    {
-
-        if (rigidbody2D.velocity.y < 0)
-            collider2D.isTrigger = false;
-
-        if (rigidbody2D.velocity.y == 0) 
-        {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                rigidbody2D.AddForce(new Vector2(0, jumpForce));
-                collider2D.isTrigger = true; //점프할 때 벽을 뚫고 싶다.
-
-            }
-        }
-    }
-
     public GameObject bubble;
     public Transform bubbleSpawnPos;
     private void FireBubble()
@@ -58,14 +35,35 @@ public class Player : MonoBehaviour
         }
     }
 
+    //공중에서 점프를 막고 싶다.
+
+    private void Jump()
+    {
+        //낙하할 때는 지면과 충돌하도록 isTrigger를 꺼주자.
+        if (rigidbody2D.velocity.y < 0) //음수면 밑으로 떨어지고 있다는 뜻
+            collider2D.isTrigger = false;
+
+        if (rigidbody2D.velocity.y == 0) //밑으로 내려갈 수 없다는 얘기, 지면과 붙어있다는 얘기, 이때는 점프 가능하다
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                rigidbody2D.AddForce(new Vector2(0, jumpForce));
+                collider2D.isTrigger = true; //점프할 때 벽을 뚫고 싶다, 다시 안할 때는 벽이 생김
+
+            }
+        }
+    }
+
+  
+
     public float minX, maxX;
     private void Move()
     {
 
         // WASD, W위로, A왼쪽,S아래, D오른쪽
         float moveX = 0;
-      
-  
+
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveX = -1;
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveX = 1;
         Vector3 position = transform.position;
