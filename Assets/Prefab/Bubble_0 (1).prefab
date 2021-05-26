@@ -135,9 +135,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveForwardFrame: 6
+  currentFrame: 0
   speed: 1.4
   rigidbody2D: {fileID: 0}
-  gravityScale: -0.7
+  gravityScale: -0.19
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  state: 0
 --- !u!50 &313571542
 Rigidbody2D:
   serializedVersion: 4
@@ -155,9 +160,9 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &8827276929431781354
 MonoBehaviour:
