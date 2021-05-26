@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7289845627737527758}
   - component: {fileID: 313571542}
   - component: {fileID: 8827276929431781354}
+  - component: {fileID: 313571544}
   m_Layer: 0
   m_Name: Bubble_0 (1)
   m_TagString: Untagged
@@ -181,3 +182,27 @@ MonoBehaviour:
   OnDisableLog: 0
   OnDestroyLog: 0
   StopOnLog: 0
+--- !u!114 &313571544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7289845627737527754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 327cdf3400a9b8644b784858d425418f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start:
+    prefab: {fileID: 0}
+    delayTime: 0
+  enable:
+    prefab: {fileID: 0}
+    delayTime: 0
+  disable:
+    prefab: {fileID: 0}
+    delayTime: 0
+  destroy:
+    prefab: {fileID: 2086079649251930368, guid: 666b0a42a05c86a4988c0463da55f5a3, type: 3}
+    delayTime: 0
