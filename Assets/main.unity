@@ -4451,6 +4451,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   downWallCheckY: -1.1
+  downJumpTime: 1
   bubble: {fileID: 7289845627737527754, guid: 5351d37b677b2cb4f82399acb1aa1a58, type: 3}
   bubbleSpawnPos: {fileID: 30295247}
   minX: -12
@@ -4627,11 +4628,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7751369231722506680, guid: 5edc694ea06a1134980fa4017b1b1976, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.35
+      value: 5.05
       objectReference: {fileID: 0}
     - target: {fileID: 7751369231722506680, guid: 5edc694ea06a1134980fa4017b1b1976, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.4
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 7751369231722506680, guid: 5edc694ea06a1134980fa4017b1b1976, type: 3}
       propertyPath: m_LocalPosition.z

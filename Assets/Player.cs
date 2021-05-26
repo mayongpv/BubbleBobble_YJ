@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     }
 
     public LayerMask wallLayer;
-    public float downWallCheckY = -1.1f;
+    public float downWallCheckY = -2.1f;
     private void DownJump()
     {
         // s키 누르면 아래로 점프
@@ -47,20 +47,19 @@ public class Player : MonoBehaviour
             {
                 Debug.Log($"{hit.point}, {hit.transform.name}");
 
-                StartCoroutine(DownJumCo());
+                ingDownJump = true;
+                collider2D.isTrigger = true;
             }
         }
     }
-
-    public float downJumpTime = 0.2f;
     bool ingDownJump = false;
-    private IEnumerator DownJumCo()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        ingDownJump = true;
-        collider2D.isTrigger = true;
-        yield return new WaitForSeconds(downJumpTime);
-        collider2D.isTrigger = false;
-        ingDownJump = false;
+        if (ingDownJump)
+        {
+            ingDownJump = false;
+            collider2D.isTrigger = false;
+        }
     }
 
     private void Jump()
@@ -72,16 +71,53 @@ public class Player : MonoBehaviour
                 collider2D.isTrigger = false;
         }
 
-        if (rigidbody2D.velocity.y == 0) // 공중에서 점프를 막고 싶다.
+        // 방향위혹은 W키 누르면 점프 하자.
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
-            // 방향위혹은 W키 누르면 점프 하자.
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            // 우리가 바닥에 붙어 있으면 점프 할 수 있게 하자.
+            bool isGround = IsGround();
+            if (isGround)
             {
                 rigidbody2D.AddForce(new Vector2(0, jumpForce));
                 collider2D.isTrigger = true; // 점프할때 벽을 뚫고 싶다.
             }
         }
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, new Vector2(0, -1) * 1.1f);
+    }
+
+
+    public float groundCheckOffsetX = 0.4f;
+    private bool IsGround()
+    {
+        // 밑으로 광선을 쏘아서 부딪히는게 있으면 우리는 바닥에 있다.
+        // 자기위치, 그리고 좌우로 0.4f만큼 바닥이 있으면 나는 바닥에 있다.
+
+        if (IsGroundCheckRay(transform.position))
+            return true;
+
+        // 좌.
+        if (IsGroundCheckRay(transform.position + new Vector3(-groundCheckOffsetX, 0, 0)))
+            return true;
+
+        // 우.
+        if (IsGroundCheckRay(transform.position + new Vector3(groundCheckOffsetX, 0, 0)))
+            return true;
+
+        return false;
+    }
+    bool IsGroundCheckRay(Vector3 pos)
+    {
+        var hit = Physics2D.Raycast(pos, new Vector2(0, -1), 1.1f, wallLayer);
+        if (hit.transform)
+            return true;
+
+        return false;
+    }
+
 
     public GameObject bubble;
     public Transform bubbleSpawnPos;
