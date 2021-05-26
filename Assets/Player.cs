@@ -1,3 +1,6 @@
+ï»¿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,7 +10,6 @@ public class Player : MonoBehaviour
     new public Collider2D collider2D;
     new public Rigidbody2D rigidbody2D;
     public float jumpForce = 100f;
-
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -19,50 +21,82 @@ public class Player : MonoBehaviour
     {
         FireBubble();
 
+        // WASD, Aì™¼ìª½,, Dì˜¤ë¥¸ìª½
         Move();
 
+        // ì í”„
         Jump();
 
+        // ì•„ë˜ë¡œì í”„
+        DownJump();
     }
+
+    public LayerMask wallLayer;
+    public float downWallCheckY = -1.1f;
+    private void DownJump()
+    {
+        // sí‚¤ ëˆ„ë¥´ë©´ ì•„ë˜ë¡œ ì í”„
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            // ì í”„ ê°€ëŠ¥í•œ ìƒí™©ì¸ì§€ í™•ì¸
+            //  ì•„ë˜ë¡œ ê´‘ì„ ì„ ì˜ì•„ì„œ ë²½ì´ ìˆë‹¤ë©´ ì•„ë˜ë¡œ ì í”„ë¥¼ í•˜ì
+            var hit = Physics2D.Raycast(
+                transform.position + new Vector3(0, downWallCheckY, 0)
+                , new Vector2(0, -1), 100, wallLayer);
+            if (hit.transform)
+            {
+                Debug.Log($"{hit.point}, {hit.transform.name}");
+
+                StartCoroutine(DownJumCo());
+            }
+        }
+    }
+
+    public float downJumpTime = 0.2f;
+    bool ingDownJump = false;
+    private IEnumerator DownJumCo()
+    {
+        ingDownJump = true;
+        collider2D.isTrigger = true;
+        yield return new WaitForSeconds(downJumpTime);
+        collider2D.isTrigger = false;
+        ingDownJump = false;
+    }
+
+    private void Jump()
+    {
+        // ë‚™í•˜í• ë•ŒëŠ” ì§€ë©´ê³¼ ì¶©ëŒí•˜ë„ë¡ isTriggerë¥¼ êº¼ì£¼ì.
+        if (ingDownJump == false)
+        {
+            if (rigidbody2D.velocity.y < 0)
+                collider2D.isTrigger = false;
+        }
+
+        if (rigidbody2D.velocity.y == 0) // ê³µì¤‘ì—ì„œ ì í”„ë¥¼ ë§‰ê³  ì‹¶ë‹¤.
+        {
+            // ë°©í–¥ìœ„í˜¹ì€ Wí‚¤ ëˆ„ë¥´ë©´ ì í”„ í•˜ì.
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                rigidbody2D.AddForce(new Vector2(0, jumpForce));
+                collider2D.isTrigger = true; // ì í”„í• ë•Œ ë²½ì„ ëš«ê³  ì‹¶ë‹¤.
+            }
+        }
+    }
+
     public GameObject bubble;
     public Transform bubbleSpawnPos;
     private void FireBubble()
     {
-        // ½ºÆäÀÌ½º ´©¸£¸é ¹öºí ³¯¸®±â.
+        // ìŠ¤í˜ì´ìŠ¤ ëˆ„ë¥´ë©´ ë²„ë¸” ë‚ ë¦¬ê¸°.
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(bubble, bubbleSpawnPos.position, transform.rotation);
         }
     }
-
-    //°øÁß¿¡¼­ Á¡ÇÁ¸¦ ¸·°í ½Í´Ù.
-
-    private void Jump()
-    {
-        //³«ÇÏÇÒ ¶§´Â Áö¸é°ú Ãæµ¹ÇÏµµ·Ï isTrigger¸¦ ²¨ÁÖÀÚ.
-        if (rigidbody2D.velocity.y < 0) //À½¼ö¸é ¹ØÀ¸·Î ¶³¾îÁö°í ÀÖ´Ù´Â ¶æ
-            collider2D.isTrigger = false;
-
-        if (rigidbody2D.velocity.y == 0) //¹ØÀ¸·Î ³»·Á°¥ ¼ö ¾ø´Ù´Â ¾ê±â, Áö¸é°ú ºÙ¾îÀÖ´Ù´Â ¾ê±â, ÀÌ¶§´Â Á¡ÇÁ °¡´ÉÇÏ´Ù
-        {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                rigidbody2D.AddForce(new Vector2(0, jumpForce));
-                collider2D.isTrigger = true; //Á¡ÇÁÇÒ ¶§ º®À» ¶Õ°í ½Í´Ù, ´Ù½Ã ¾ÈÇÒ ¶§´Â º®ÀÌ »ı±è
-
-            }
-        }
-    }
-
-  
-
-    public float minX, maxX;
+    public float minX = -12.3f, maxX = 12.3f;
     private void Move()
     {
-
-        // WASD, WÀ§·Î, A¿ŞÂÊ,S¾Æ·¡, D¿À¸¥ÂÊ
         float moveX = 0;
-
 
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) moveX = -1;
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) moveX = 1;
@@ -72,10 +106,11 @@ public class Player : MonoBehaviour
         position.x = Mathf.Min(maxX, position.x);
         transform.position = position;
 
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") == false)
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("attack") == false)
         {
             if (moveX != 0)
-            {//moveX°¡ ¾ç¼ö¸é 180 ·ÎÅ×ÀÌ¼Ç ¾Æ´Ï¸é 0µµ ·ÎÅ×ÀÌ¼Ç
+            {
+                //moveX ì–‘ìˆ˜ì´ë©´ 180 ë¡œí…Œì´ì…˜ ì•„ë‹ˆë©´ 0ë„ ë¡œí…Œì´ì…˜ ì ìš©.
                 float rotateY = 0;
                 if (moveX < 0)
                     rotateY = 180;
@@ -83,12 +118,11 @@ public class Player : MonoBehaviour
                 var rotation = transform.rotation;
                 rotation.y = rotateY;
                 transform.rotation = rotation;
-                animator.Play("Run");
+
+                animator.Play("run");
             }
             else
-                animator.Play("Idle");
+                animator.Play("idle");
         }
-
-
     }
 }

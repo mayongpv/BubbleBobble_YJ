@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 280307440}
   - component: {fileID: 280307439}
   - component: {fileID: 280307441}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3887,7 +3887,7 @@ GameObject:
   m_Component:
   - component: {fileID: 304108858}
   - component: {fileID: 304108857}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4447,6 +4447,10 @@ MonoBehaviour:
   collider2D: {fileID: 0}
   rigidbody2D: {fileID: 0}
   jumpForce: 600
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  downWallCheckY: -1.1
   bubble: {fileID: 7289845627737527754, guid: 5351d37b677b2cb4f82399acb1aa1a58, type: 3}
   bubbleSpawnPos: {fileID: 30295247}
   minX: -12
